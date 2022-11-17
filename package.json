@@ -1,0 +1,22 @@
+{
+  "name": "primernode2",
+  "version": "0.1.0",
+  "description": "Un chat como telegram pero mejor",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chat",
+    "telegram",
+    "server"
+  ],
+  "author": "Andreid",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "mongoos": "^0.0.1-security",
+    "mongoose": "^6.7.2"
+  }
+}
