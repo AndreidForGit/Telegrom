@@ -1,32 +1,41 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+const server = require('http').Server(app);
 
+const config = require('./config');
+
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const socket = require('./socket')
 const db = require('./db');
-
 const router = require('./network/routes');
 
-db('mongodb+srv://user:user1234@telegrom.uolbskq.mongodb.net/?retryWrites=true&w=majority')
+db(config.dbUrl)
+
+app.use(cors())
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+socket.connect(server)
+
 router(app);
 
-app.use('/app', express.static('public'));
+app.use(config.publicRoute, express.static('public'));
 
-app.get('/socket.io/socket.io.js', (req, res) => {
-    res.sendFile(__dirname + '/node_modules/socket.io/client-dist/socket.io.js');
-  });
+// app.get('/socket.io/socket.io.js', (req, res) => {
+//   res.sendFile(__dirname + '/node_modules/socket.io/client-dist/socket.io.js');
+//   });
 
-io.on('connection', (socket) => {
-    console.log('Nuevo cliente conectado');
-    // socket.emit('mensaje', 'Bienvenido');
-})
+// io.on('connection', (socket) => {
+//     console.log('Nuevo cliente conectado');
+//     socket.emit('mensaje', 'Bienvenido');
+// })
 
-app.listen(3000);
-console.log('La aplicacion está escuchando en http://localhost:3000/app');
+// setInterval(function () {
+//   io.emit('mensaje', 'Hola, Les escribo a todos');
+// }, 3000)
+
+server.listen(config.port, function () {
+  console.log('La aplicacion está escuchando en '+ config.host +':' + config.port);
+}); 

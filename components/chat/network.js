@@ -8,8 +8,8 @@ router.post('/', function(req, res) {
         .then(data => {
             response.success(req, res, data, 201);
         })
-        .catch(e => {
-            response.error(req, res, 'Información invalida', 400, e);
+        .catch(err => {
+            response.error(req, res, 'Internal error', 500, err);
         });
 });
 
